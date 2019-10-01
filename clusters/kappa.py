@@ -281,10 +281,10 @@ class Kappa(object):
                 else:
                     xsrc, ysrc = cutils.skycoord_to_pixel(clust_coord, wcs)
                     ax.plot(xsrc, ysrc, color='g', ms=25, mew=4, marker='+')
-            ax.set_xlim(xmin=min(self.data['xsrc']),
-                        xmax=max(self.data['xsrc']) + 1)
-            ax.set_ylim(ymin=min(self.data['ysrc']),
-                        ymax=max(self.data['ysrc']) + 1)
+            ax.set_xlim(left=min(self.data['xsrc']),
+                        right=max(self.data['xsrc']) + 1)
+            ax.set_ylim(bottom=min(self.data['ysrc']),
+                        top=max(self.data['ysrc']) + 1)
             ax.tick_params(axis='both', labelsize=14)
             if wcs is not None:
                 ra = cutils.pixel_to_skycoord(ax.get_xticks(),
@@ -295,17 +295,17 @@ class Kappa(object):
                                                ax.get_yticks(),
                                                wcs).dec.value
                 ax2 = ax.twiny()
-                ax2.set_xlim(ax.get_xlim())
-                ax2.set_xticks(ax.get_xticks())
-                ax2.set_xticklabels(["%.2f" % r for r in ra], fontsize=14)
+                ax2.set_xlim(ax.get_xlim())  
+                ax2.set_xticks(ax.get_xticks()) 
+                ax2.set_xticklabels(["%.2f" % r for r in ra], fontsize=14) 
                 ax2.set_xlabel("RA (deg)", fontsize=16)
-                ax2 = ax.twinx()
-                ax2.set_ylim(ax.get_ylim())
-                ax2.set_yticks(ax.get_yticks())
-                ax2.set_yticklabels(["%.2f" % r for r in dec], fontsize=14)
+                ax2 = ax2.twinx()
+                ax2.set_ylim(ax.get_ylim()) 
+                ax2.set_yticks(ax.get_yticks()) 
+                ax2.set_yticklabels(["%.2f" % r for r in dec], fontsize=14) 
                 ax2.set_ylabel("DEC (deg)", fontsize=16)
             fig.savefig(cmap + ".png")
-        pl.show()
+        #pl.show()
 
     def plot_quiver(self, clust_coord=None, wcs=None, figsize=(10, 12)):
         """Quiver plot"""
