@@ -33,16 +33,16 @@ def analysis(table, xclust, yclust, e1='ext_shapeHSM_HsmShapeRegauss_e1',
     """
     e1r = table[e1][table['filter'] == 'r']
     e2r = table[e2][table['filter'] == 'r']
-    e1i = table[e1][table['filter'] == 'i']
-    e2i = table[e2][table['filter'] == 'i']
+    e1i = table[e1][(table['filter']=='i') | (table['filter']=='i2')] #changed to work with "i2" or "i"
+    e2i = table[e2][(table['filter']=='i') | (table['filter']=='i2')]
     distx = table["x_Src"][table['filter'] == 'r'] - xclust
     disty = table["y_Src"][table['filter'] == 'r'] - yclust
-
+    
     # Quality cuts
     # magnitude cut
     filt = table['modelfit_CModel_mag'][table['filter'] == 'r'] < 23.5
     # resolution cut
-    filt &= table['ext_shapeHSM_HsmShapeRegauss_resolution'][table['filter'] == 'i'] > 0.3
+    filt &= table['ext_shapeHSM_HsmShapeRegauss_resolution'][(table['filter']=='i') | (table['filter']=='i2')] > 0.3
     # ellipticity cut
     filt &= (abs(e1i) < 1) & (abs(e2i) < 1)
     # er ~= ei
@@ -58,14 +58,14 @@ def analysis(table, xclust, yclust, e1='ext_shapeHSM_HsmShapeRegauss_e1',
     plot_shear(gamt, gamc, dist)
 
     catf = table[(abs(table[e1]) < 1.2) & (
-        abs(table[e2] < 1.2) & (table['filter'] == 'i'))]
+        abs(table[e2] < 1.2) & ((table['filter']=='i') | (table['filter']=='i2')))] #changed to work with "i2" or "i"
     kappa = ckappa.Kappa(catf['x_Src'], catf['y_Src'],
                          catf[e1], catf[e2], step=step)
     if config is not None and datafile is not None:
         kappa.plot_maps(
             clust_coord=[config['ra'], config['dec']], wcs=ckappa.load_wcs(datafile))
-    pylab.show()
-    # quiver_plot()
+    #pylab.show()
+    #quiver_plot()
 
 
 def xy_clust(config, wcs):
